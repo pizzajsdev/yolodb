@@ -4,7 +4,7 @@
   "homepage": "https://itsjavi.com/yolodb",
   "repository": {
     "type": "git",
-    "url": "https://github.com/itsjavi/yolodb.git"
+    "url": "git+https://github.com/itsjavi/yolodb.git"
   },
   "license": "MIT",
   "type": "module",
@@ -23,13 +23,27 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsup src/index.ts --dts --sourcemap --format esm --clean",
+    "format": "sort-package-json && prettier --write ./src README.md tsconfig.json",
+    "lint": "pnpm run typecheck && prettier --check ./src README.md tsconfig.json && publint",
+    "prepare": "sort-package-json",
+    "prepublishOnly": "pnpm run build",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-     "superjson": "^2.2.2"
+    "superjson": "^2.2.2"
   },
   "devDependencies": {
+    "@types/node": "^22.13.4",
+    "prettier": "^3.5.1",
+    "publint": "^0.3.5",
+    "sort-package-json": "^2.14.0",
+    "tsup": "^8.3.6",
     "typescript": "^5.7.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }

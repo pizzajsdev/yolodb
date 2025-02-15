@@ -11,7 +11,8 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "incremental": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
     // Stricter linting rules:
     "verbatimModuleSyntax": true,
     "noUnusedLocals": true,
