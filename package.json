@@ -1,0 +1,35 @@
+{
+  "name": "yolodb",
+  "version": "1.0.0",
+  "homepage": "https://itsjavi.com/yolodb",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/itsjavi/yolodb.git"
+  },
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+     "superjson": "^2.2.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}
