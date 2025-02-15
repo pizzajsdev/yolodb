@@ -9,8 +9,8 @@ simple persistent store without the overhead of a full database system.
 
 ## Highlights ✨
 
-- 🔄 **Real-time file synchronization** - No stale data in multi-threaded
-  environments
+- 🔄 **Real-time file synchronization** - No stale data in multi-threaded/process
+  environments (such as Next.js server)
 - 🎯 **SuperJSON powered** - Support for Dates, Maps, Sets, and more complex
   data types
 - 🛠️ **Developer friendly API** - Familiar CRUD operations with a simple,
