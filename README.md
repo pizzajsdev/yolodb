@@ -113,14 +113,19 @@ table.truncate(); // Clear all records
 ### Repository Pattern
 
 ```typescript
+interface UserRepository {
+  findByUsername(username: string): User | null
+}
+
 class MockedUserRepository extends YoloDbRepository<User> implements UserRepository {
   constructor() {
     super("users.json", "id");
   }
 
-  // Add custom methods here
+  // Implement interface methods here
 }
-// Your real repository would look like this: "class DrizzleUserRepository implements UserRepository { ...|
+// Your real repository would look like this: 
+class DrizzleUserRepository implements UserRepository { ... }
 ```
 
 ## Best Practices 🌟
