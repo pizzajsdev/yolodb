@@ -27,7 +27,7 @@
     "format": "sort-package-json && prettier --write ./src README.md tsconfig.json",
     "lint": "pnpm run typecheck && prettier --check ./src README.md tsconfig.json && publint",
     "prepare": "sort-package-json",
-    "prepublishOnly": "pnpm run build",
+    "prepublishOnly": "pnpm run lint && pnpm run build",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
