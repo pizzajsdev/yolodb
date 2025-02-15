@@ -73,6 +73,7 @@ const activeUsers = usersTable.search((user) => user.status === 'active')
 
 ### Advantages
 
+- **Quick data access**: Compared to SQL-based engines, you can easily check the data by opening the JSON files.
 - **Simple but Powerful**: Basic CRUD operations with a simple and familiar API
 - **No Configuration**: Works out of the box
 - **Type Safety**: Full TypeScript support
@@ -86,6 +87,8 @@ const activeUsers = usersTable.search((user) => user.status === 'active')
 - **Performance costs**: Reads table files on every operation, and writes to disk on every write operation
 - **Concurrency**: Basic file-based locking
 - **Scale**: Not suitable for large datasets, since data is loaded into memory
+- **Sorting, Joins and more complex queries**: Not implemented yet.
+- **Data migrations**: Not implemented, and not planned.
 
 ## API Reference
 
