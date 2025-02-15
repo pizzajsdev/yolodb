@@ -20,6 +20,12 @@ simple persistent store without the overhead of a full database system.
 - 🧪 **Perfect for testing** - Mock your production database with ease
 - 🔍 **Debuggable** - Easily debug your data by checking the table files
 
+
+## What's different compared to LowDB?
+- Uses superjson for serialization/deserialization, so it supports more data types like Dates, Maps, Sets, etc.
+- More intuitive interface, easier to use, closer to what would you expect from a real DB abstraction layer.
+- Read/write operations are done on-the-fly. Less performant, but you don't need to worry about stale data.
+
 ## Quick Start
 
 > ℹ️ Right now, there is still no public npm package, so you have to manually
