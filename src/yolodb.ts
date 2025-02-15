@@ -2,15 +2,29 @@ import fs from 'node:fs'
 import path from 'node:path'
 import superjson from 'superjson'
 
+export type YoloDbLogger = (...args: any[]) => void
+
+export class YoloDbError extends Error {
+  constructor(message: string) {
+    super(`[YoloDB] ${message}`)
+    this.name = 'YoloDbError'
+  }
+}
+
+export type YoloDbTableOptions = {
+  logger?: YoloDbLogger
+}
+
 /**
  * Simple file-based JSON database built on top of SuperJSON.
  */
 export class YoloDbTable<R extends Record<string, any>> {
-  private tableName: string
-  private pkField: keyof R
-  private filePath: string
+  private readonly tableName: string
+  private readonly pkField: keyof R
+  private readonly filePath: string
+  private readonly options: Required<YoloDbTableOptions>
 
-  constructor(absoluteFilePath: string, pkField: keyof R, initialData: R[] = []) {
+  constructor(absoluteFilePath: string, pkField: keyof R, initialData: R[] = [], options?: YoloDbTableOptions) {
     const dirName = path.dirname(absoluteFilePath)
 
     if (!fs.existsSync(dirName)) {
@@ -21,15 +35,24 @@ export class YoloDbTable<R extends Record<string, any>> {
     this.pkField = pkField
     this.filePath = absoluteFilePath
 
+    this.options = {
+      logger: (...args) => console.debug(`[YoloDB] ${this.tableName}`, ...args),
+      ...options,
+    }
+
     if (!fs.existsSync(absoluteFilePath)) {
       this.saveFile(initialData)
     }
   }
 
+  private get log(): YoloDbLogger {
+    return this.options.logger
+  }
+
   private getData(): R[] {
     const db = this.readFile()
     if (!Array.isArray(db)) {
-      throw new Error(`[YoloDbTable] Invalid data in ${this.filePath}`)
+      throw new YoloDbError(`Invalid data in ${this.filePath}`)
     }
     return db
   }
@@ -39,7 +62,7 @@ export class YoloDbTable<R extends Record<string, any>> {
   }
 
   readFile(): R[] {
-    console.log(`[YoloDB] Reading ${this.tableName} from ${this.filePath}`)
+    this.log(`Reading table from ${this.filePath}`)
 
     if (!fs.existsSync(this.filePath)) {
       this.saveFile([])
@@ -51,7 +74,7 @@ export class YoloDbTable<R extends Record<string, any>> {
   }
 
   saveFile(db: R[]): void {
-    console.log(`[YoloDB] Saving ${this.tableName} into ${this.filePath}`)
+    this.log(`Saving table to ${this.filePath}`)
     fs.writeFileSync(this.filePath, JSON.stringify(superjson.serialize(db), null, 2))
   }
 
@@ -78,7 +101,7 @@ export class YoloDbTable<R extends Record<string, any>> {
   insert(record: R): void {
     const pk = record[this.pkField]
     if (!pk) {
-      throw new Error(`[YoloDB] Record does not have a primary key: ${this.tableName}.${String(this.pkField)}`)
+      throw new YoloDbError(`Record does not have a primary key: ${this.tableName}.${String(this.pkField)}`)
     }
 
     const db = this.getData()
@@ -97,7 +120,7 @@ export class YoloDbTable<R extends Record<string, any>> {
   update(record: Partial<R>): void {
     const pk = record[this.pkField]
     if (!pk) {
-      throw new Error(`[YoloDB] Record not found in ${this.tableName}: ${pk}`)
+      throw new YoloDbError(`Record not found in ${this.tableName}: ${pk}`)
     }
 
     const db = this.getData()
@@ -121,7 +144,7 @@ export class YoloDbTable<R extends Record<string, any>> {
   }
 
   deleteMany(ids: string[]): void {
-    console.log(`[YoloDB] Calling deleteMany with ${ids.length} ids: ${ids.join(', ')}`)
+    this.log(`Deleting ${ids.length} records`)
     const db = this.getData().filter((record) => !ids.includes(record[this.pkField]))
 
     this.saveFile(db)
@@ -151,9 +174,10 @@ export function yolodb<R extends Record<string, any>>(
   filePath: string,
   pkField: keyof R,
   initialData: R[],
+  options?: YoloDbTableOptions,
 ): YoloDbTable<R> {
   if (!_yoloDbTables[filePath]) {
-    _yoloDbTables[filePath] = new YoloDbTable<R>(filePath, pkField, initialData)
+    _yoloDbTables[filePath] = new YoloDbTable<R>(filePath, pkField, initialData, options)
   }
   return _yoloDbTables[filePath]
 }
