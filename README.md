@@ -30,11 +30,13 @@ Install the package:
 npm install -D yolodb
 ```
 
+Example:
+
 ```typescript
 import { yolodb } from 'yolodb'
 
 // Create a table with a primary key
-const usersTable = yolodb<User>('users.json', 'id', [])
+const usersTable = yolodb<User>('full/path/to/users.json', 'id', [])
 
 // Insert a record
 usersTable.insert({
