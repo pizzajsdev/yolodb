@@ -25,6 +25,7 @@ simple persistent store without the overhead of a full database system.
 - Uses superjson for serialization/deserialization, so it supports more data types like Dates, Maps, Sets, etc.
 - More intuitive interface, easier to use, closer to what would you expect from a real DB abstraction layer.
 - Read/write operations are done on-the-fly. Less performant, but you don't need to worry about stale data.
+- Comes with handy object-oriented abstractions such as `YoloDbRepository`
 
 ## Quick Start
 
