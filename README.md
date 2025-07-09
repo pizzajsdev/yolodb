@@ -57,13 +57,11 @@ const activeUsers = usersTable.search((user) => user.status === 'active')
 ### Use Cases
 
 - 🧪 **Testing and Development**
-
   - Mock your production database (best way is via abstractions such as repository classes)
   - Quick prototyping without database setup
   - Isolated test environments
 
 - 🎮 **Small Applications**
-
   - Simple data persistence needs
   - Prototypes and MVPs
   - Local development tools
@@ -146,7 +144,6 @@ class DrizzleUserRepository implements UserRepository { ... }
    ```
 
 2. **Implement Repository Pattern**
-
    - Encapsulate database logic
    - Add domain-specific methods
    - Maintain clean architecture
